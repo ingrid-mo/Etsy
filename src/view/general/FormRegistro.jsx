@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase";
+// import "/General.css"
 export const FormRegistro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,9 +25,10 @@ export const FormRegistro = () => {
     <div>
       <h1>Formulario de registro</h1>
       <form onSubmit={handleRegister}>
-        <div>
+        <div class="mb-3">
           <label htmlFor="nombre">Nombre:</label>
           <input
+          class="form-control form-control-lg"
             type="text"
             id="nombre"
             onChange={(e) => setNombre(e.target.value)}
