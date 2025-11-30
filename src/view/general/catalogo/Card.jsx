@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-const Card = ({ titulo, descripcion, imagenBase64 }) => {
+const Card = ({ titulo, descripcion, imagenBase64,addToCart, item }) => {
+  
   return (
     <div>
       <div className="card" style={{ width: '18rem' }}>
@@ -15,10 +16,14 @@ const Card = ({ titulo, descripcion, imagenBase64 }) => {
           <p className="card-text">{descripcion}</p>
 
           <div class="d-flex justify-content-between"> 
-            <button class="btn btn-outline-success">añadir al carro</button>
+            <button 
+            class="btn btn-outline-success"  
+            onClick={() => addToCart(item)}>
+              añadir al carro
+              </button>
 
           
-              <Link class="nav-link " to="/Detalle" >
+              <Link class="nav-link " to={`/Detalle/${item.id}`} >
                 Detalle 
               </Link>
 

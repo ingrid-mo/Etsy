@@ -29,20 +29,23 @@ const Catalogo = () => {
   return (
     <div className="container-fluid mb-4">
       <div class="container-fluid d-flex justify-content-center my-3">
-             <h1>Catalogo</h1>
+        <h1>Catalogo</h1>
       </div>
 
 
       {items.length === 0 && <p>Cargando datos...</p>}
 
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent:"space-between"}} >
+      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }} >
         {items.map((item) => (
-         <Card 
-      key={item.id} 
-      titulo={item.titulo}
-      descripcion={item.descripcion}
-      imagenBase64={item.imagen} // <- campo como está en Firestore
-    />
+          <Card
+            addToCart={addToCart}
+  item={item}
+
+            key={item.id}
+            titulo={item.titulo}
+            descripcion={item.descripcion}
+            imagenBase64={item.imagen} // <- campo como está en Firestore
+          />
         ))}
       </div>
     </div>

@@ -13,47 +13,47 @@ const FormularioProducto = () => {
   const [precio, setPrecio] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
 
-    try {
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (err) => reject(err);
+  });
+};
 
-      let imageUrl = "";
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-      if (imagen) {
-        const imageRef = ref(storage, `productos/${imagen.name}`);
-        await uploadBytes(imageRef, imagen);
-        imageUrl = await getDownloadURL(imageRef);
-      }
-const id = crypto.uuidv4(); 
+  try {
+    let imageBase64 = "";
 
-      await addDoc(collection(db, "catalogo"), {
-        titulo,
-        descripcion,
-        imagen: "loqueseas",
-        stock: Number(stock),
-        precio: Number(precio),
-        creado: new Date(),
-        id
-      });
-
-      alert("Producto subido correctamente");
-
-      // Limpiar formulario
-      setTitulo("");
-      setDescripcion("");
-      setImagen(null);
-      setStock(0);
-      setPrecio(0);
-
-    } catch (error) {
-      console.error(error);
-      alert("Error al subir producto");
+    if (imagen) {
+      imageBase64 = await fileToBase64(imagen); // 👈 Convertir a Base64
     }
 
-    setLoading(false);
-  };
+    await addDoc(collection(db, "catalogo"), {
+      titulo,
+      descripcion,
+      imagen: imageBase64,   
+      stock: Number(stock),
+      precio: Number(precio),
+      creado: new Date(),
+      id: crypto.randomUUID(),
+    });
+
+    alert("Producto subido correctamente");
+  } catch (error) {
+    console.error("ERROR SUBIENDO PRODUCTO:", error);
+    alert("Error al subir producto");
+  }
+
+  setLoading(false);
+};
+
+
 
   return (
     <div class="container-fluid">

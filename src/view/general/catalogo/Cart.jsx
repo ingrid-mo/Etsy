@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../../../contex/Contex";
 
-const Cart = () => {
+export const Cart = () => {
   const { cartItems, removeFromCart, clearCart } = useContext(CartContext);
 
   return (
@@ -35,7 +35,7 @@ const Cart = () => {
           )}
 
           {cartItems.length > 0 && (
-            <button className="btn btn-warning w-100 mt-3" onClick={clearCart}>
+            <button className="btn btn-outline-success w-100 mt-3" onClick={clearCart}>
               Vaciar Carrito
             </button>
           )}
