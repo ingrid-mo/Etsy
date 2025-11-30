@@ -6,90 +6,113 @@ import { storage, db } from "../../Firebase";
 
 const FormularioProducto = () => {
 
-const [titulo, setTitulo] = useState("");
+  const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState(null);
   const [stock, setStock] = useState(0);
   const [precio, setPrecio] = useState(0);
   const [loading, setLoading] = useState(false);
-const convertToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file); // convierte el archivo a base64
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    let base64Image = "";
+    try {
 
-    if (imagen) {
-      base64Image = await convertToBase64(imagen);
+      let imageUrl = "";
+
+      if (imagen) {
+        const imageRef = ref(storage, `productos/${imagen.name}`);
+        await uploadBytes(imageRef, imagen);
+        imageUrl = await getDownloadURL(imageRef);
+      }
+const id = crypto.uuidv4(); 
+
+      await addDoc(collection(db, "catalogo"), {
+        titulo,
+        descripcion,
+        imagen: "loqueseas",
+        stock: Number(stock),
+        precio: Number(precio),
+        creado: new Date(),
+        id
+      });
+
+      alert("Producto subido correctamente");
+
+      // Limpiar formulario
+      setTitulo("");
+      setDescripcion("");
+      setImagen(null);
+      setStock(0);
+      setPrecio(0);
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al subir producto");
     }
 
-    await addDoc(collection(db, "catalogo"), {
-      titulo,
-      descripcion,
-      imagen: base64Image,  
-      stock: Number(stock),
-      precio: Number(precio),
-      creado: new Date()
-    });
+    setLoading(false);
+  };
 
-    alert("Producto subido correctamente");
-
-    // Limpiar formulario
-    setTitulo("");
-    setDescripcion("");
-    setImagen(null);
-    setStock(0);
-    setPrecio(0);
-
-  } catch (error) {
-    console.error(error);
-    alert("Error al subir producto");
-  }
-
-  setLoading(false);
-};
-
-
-        return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Titulo del producto</label>
-        <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+  return (
+    <div class="container-fluid">
+      <div class="container-fluid d-flex justify-content-center mt-3">
+        <h1>Formulario de producto</h1>
       </div>
+      <form onSubmit={handleSubmit} class="container">
 
-      <div>
-        <label>Descripción</label>
-        <input type="text" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-      </div>
+        <div>
+          <label>Titulo del producto</label>
+          <input
+            class="form-control form-control-lg"
+            type="text"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)} />
+        </div>
 
-      <div>
-        <label>Imagen de referencia</label>
-        <input type="file" onChange={(e) => setImagen(e.target.files[0])} />
-      </div>
+        <div>
+          <label>Descripción</label>
+          <input
+            class="form-control form-control-lg"
+            type="text"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)} />
+        </div>
 
-      <div>
-        <label>Stock</label>
-        <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
-      </div>
+        <div>
+          <label>Imagen de referencia</label>
+          <input
+            class="form-control form-control-lg"
+            type="file"
+            onChange={(e) => setImagen(e.target.files[0])} />
+        </div>
 
-      <div>
-        <label>Precio</label>
-        <input type="number" value={precio} onChange={(e) => setPrecio(e.target.value)} />
-      </div>
+        <div>
+          <label>Stock</label>
+          <input
+            class="form-control form-control-lg"
+            type="number"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)} />
+        </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Subiendo..." : "Subir producto"}
-      </button>
-    </form>
+        <div>
+          <label>Precio</label>
+          <input
+            class="form-control form-control-lg"
+            type="number"
+            value={precio}
+            onChange={(e) => setPrecio(e.target.value)} />
+        </div>
+        <div class="container-fluid d-flex justify-content-end">
+          <button type="submit" disabled={loading} class="btn btn-success mt-2 ">
+            {loading ? "Subiendo..." : "Subir producto"}
+          </button>
+        </div>
+
+      </form>
+    </div>
   );
 }
 

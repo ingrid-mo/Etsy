@@ -22,9 +22,11 @@ export const FormRegistro = () => {
   }
 
   return (
-    <div>
-      <h1>Formulario de registro</h1>
-      <form onSubmit={handleRegister}>
+    <div  class="container-fluid">
+      <div class="container-fluid d-flex justify-content-center mt-3">
+              <h1>Formulario de registro</h1>
+      </div>
+      <form onSubmit={handleRegister} class="container">
         <div class="mb-3">
           <label htmlFor="nombre">Nombre:</label>
           <input
@@ -39,6 +41,7 @@ export const FormRegistro = () => {
         <div>
           <label htmlFor="email">Email:</label>
           <input
+             class="form-control form-control-lg"
             type="email"
             id="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -49,6 +52,7 @@ export const FormRegistro = () => {
         <div>
           <label htmlFor="password">Contraseña:</label>
           <input
+           class="form-control form-control-lg"
             type="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -56,7 +60,7 @@ export const FormRegistro = () => {
           />
         </div>
 
-        <div>
+        {/* <div>
           <label>Eres vendedor</label>
           <input
             type="radio"
@@ -72,9 +76,11 @@ export const FormRegistro = () => {
             value="comprador"
             onChange={(e) => setRol(e.target.value)}
           />
-        </div>
-
-        <button type="submit">Crear cuenta</button>
+        </div> */}
+<div class="container-fluid d-flex justify-content-end">
+   <button type="submit" class="btn btn-success mt-2 "  >Crear cuenta</button>
+   </div>
+       
 
         {error && <p style={{ color: "red" }}>{error}</p>}
       </form>

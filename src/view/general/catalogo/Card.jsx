@@ -14,14 +14,14 @@ const Card = ({ titulo, descripcion, imagenBase64 }) => {
           <h5>{titulo}</h5>
           <p className="card-text">{descripcion}</p>
 
-          <div> 
-            <button>añadir al carro</button>
+          <div class="d-flex justify-content-between"> 
+            <button class="btn btn-outline-success">añadir al carro</button>
 
-            <button>
-              <Link className="nav-link" to="/Detalle">
+          
+              <Link class="nav-link " to="/Detalle" >
                 Detalle 
               </Link>
-            </button>
+
           </div>
         </div>
       </div>
